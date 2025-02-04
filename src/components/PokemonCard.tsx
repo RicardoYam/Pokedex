@@ -83,7 +83,7 @@ const PokemonCard = ({ currentPokemonUrl, flipToggleDetails }: Props) => {
         </p>
 
         <img
-          className="absolute -bottom-20 left-24"
+          className="absolute -bottom-20 left-24 z-20"
           src={
             pokemonDetails.data?.sprites.other["official-artwork"].front_default
           }
