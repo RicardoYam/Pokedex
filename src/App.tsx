@@ -163,7 +163,11 @@ function App() {
           <BeatLoader color="#6DB948" size={50} />
         </div>
       )}
-      {!pokemonQuery.hasNextPage && <p>No more Pokémon to load</p>}
+      {!pokemonQuery.hasNextPage && (
+        <div className="flex items-center justify-center">
+          No more pokemons to load!
+        </div>
+      )}
       <div className="h-20"></div>
     </div>
   );
