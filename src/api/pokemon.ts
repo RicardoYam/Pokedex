@@ -1,12 +1,10 @@
+import { PokemonPage } from "@/types/types";
 import axios from "axios";
 
-const axiosClient = axios.create({
-  baseURL: "https://pokeapi.co/api/v2",
-});
-
-export async function getPokemons() {
-  const res = await axiosClient.get("/pokemon");
-  return res.data.results;
+export async function getPokemons(url?: string): Promise<PokemonPage> {
+  const pageUrl = url || `https://pokeapi.co/api/v2/pokemon?offset=0&limit=54`;
+  const res = await axios.get(pageUrl);
+  return res.data;
 }
 
 export async function getPokemonDetails(url: string | null) {

@@ -9,6 +9,7 @@ import {
 import { ChevronLeft } from "lucide-react";
 import Ellipse from "@/assets/Ellipse.png";
 import Subtract from "@/assets/Subtract.png";
+import { Skeleton } from "./ui/skeleton";
 
 interface Props {
   currentPokemonUrl: string | null;
@@ -31,8 +32,15 @@ const PokemonCard = ({ currentPokemonUrl, flipToggleDetails }: Props) => {
 
   if (pokemonDetails.isLoading)
     return (
-      <div className="absolute right-0 top-0 h-full w-[400px] border-l-2 border-black bg-white">
-        Loading...
+      <div className="fixed right-0 top-0 h-full w-[400px] border-l-2 border-black bg-white">
+        <div className="flex h-full w-full flex-col items-center justify-start gap-14 py-24">
+          <Skeleton className="h-52 w-52 rounded-full" />
+          <div className="flex flex-col gap-4">
+            <Skeleton className="h-10 w-[300px] rounded-xl" />
+            <Skeleton className="h-10 w-[200px] rounded-xl" />
+            <Skeleton className="h-10 w-[100px] rounded-xl" />
+          </div>
+        </div>
       </div>
     );
   if (pokemonDetails.isError)
@@ -43,7 +51,7 @@ const PokemonCard = ({ currentPokemonUrl, flipToggleDetails }: Props) => {
     );
 
   return (
-    <div className="absolute right-0 top-0 h-full w-[400px] border-l-2 border-black bg-white">
+    <div className="fixed right-0 top-0 h-full w-[400px] border-l-2 border-black bg-white">
       <div
         className="absolute inset-0 -top-56 h-full w-full"
         style={{

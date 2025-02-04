@@ -3,6 +3,12 @@ export interface Pokemon {
   url: string;
 }
 
+export interface PokemonPage {
+  results: Pokemon[];
+  next: string;
+  previous: string;
+}
+
 export interface PokemonStats {
   stat: {
     name: string;
