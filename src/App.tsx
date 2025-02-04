@@ -17,6 +17,7 @@ function App() {
   const [toggleDetails, setToggleDetails] = useState<boolean>(false);
   const [selectedPokemon, setSelectedPokemon] = useState<string | null>(null);
   const mouseOutsideRef = useRef<HTMLDivElement>(null);
+  const [randomIndex, setRandomIndex] = useState<number>(0);
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -42,10 +43,17 @@ function App() {
     setSelectedPokemon(null);
   }
 
+  function getRandomIndex() {
+    if (!pokemonQuery.data) return;
+
+    const max = pokemonQuery.data.length - 10;
+    const newIndex = Math.floor(Math.random() * (max + 1));
+    setRandomIndex(newIndex);
+  }
+
   if (pokemonQuery.isLoading)
     return (
       <div>
-        {/* Background */}
         <div className="relative -z-10 flex items-center">
           <img
             className="absolute -top-40 right-0"
@@ -99,23 +107,31 @@ function App() {
           width={250}
         />
       </div>
-      <div className="p-10">
+      <div className="flex justify-between p-10">
         <h1 className="text-5xl font-bold">Pokedex</h1>
+        <button
+          className="bg-menu rounded-xl px-4 py-2 text-white hover:bg-[#61a63f]"
+          onClick={getRandomIndex}
+        >
+          Shuffle
+        </button>
       </div>
-      <div className="m-4 grid grid-cols-6 gap-4 px-5">
-        {pokemonQuery.data?.slice(0, 10).map((pokemon, index) => (
-          <div
-            key={index}
-            className="bg-menu flex cursor-pointer items-center justify-between rounded-xl px-6 py-4 hover:bg-[#61a63f]"
-            onClick={() => {
-              setSelectedPokemon(pokemon.url);
-              setToggleDetails(true);
-            }}
-          >
-            <p className="font-semibold text-white">#00{index + 1}</p>
-            <p className="font-semibold text-white">{pokemon.name}</p>
-          </div>
-        ))}
+      <div key={randomIndex} className="m-4 grid grid-cols-6 gap-4 px-5">
+        {pokemonQuery.data
+          ?.slice(randomIndex, randomIndex + 10)
+          .map((pokemon, index) => (
+            <div
+              key={index}
+              className="bg-menu flex cursor-pointer items-center justify-between rounded-xl px-6 py-4 hover:bg-[#61a63f]"
+              onClick={() => {
+                setSelectedPokemon(pokemon.url);
+                setToggleDetails(true);
+              }}
+            >
+              <p className="font-semibold text-white">#00{index + 1}</p>
+              <p className="font-semibold text-white">{pokemon.name}</p>
+            </div>
+          ))}
       </div>
 
       {toggleDetails && selectedPokemon && (
