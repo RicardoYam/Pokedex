@@ -1,4 +1,4 @@
-import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery } from "@tanstack/react-query";
 import { getPokemons } from "./api/pokemon";
 import { Pokemon, PokemonPage } from "./types/types";
 import { useEffect, useRef, useState } from "react";
@@ -13,9 +13,9 @@ function App() {
   const pokemonQuery = useInfiniteQuery<PokemonPage>({
     queryKey: ["pokemons"],
     queryFn: ({
-      pageParam = "https://pokeapi.co/api/v2/pokemon?offset=0&limit=54",
+      pageParam = "https://pokeapi.co/api/v2/pokemon?offset=0&limit=42",
     }) => getPokemons(pageParam as string),
-    initialPageParam: "https://pokeapi.co/api/v2/pokemon?offset=0&limit=54",
+    initialPageParam: "https://pokeapi.co/api/v2/pokemon?offset=0&limit=42",
     getNextPageParam: (lastPage) => lastPage.next,
   });
 
@@ -128,7 +128,7 @@ function App() {
         {allPokemons.map((pokemon, index) => (
           <div
             key={index}
-            className="flex cursor-pointer items-center justify-between rounded-xl bg-menu px-6 py-6 hover:bg-[#61a63f]"
+            className="flex cursor-pointer items-center justify-between rounded-xl bg-menu px-6 py-8 hover:bg-[#61a63f]"
             onClick={() => {
               setSelectedPokemon(pokemon.url);
               setToggleDetails(true);
@@ -164,7 +164,7 @@ function App() {
         </div>
       )}
       {!pokemonQuery.hasNextPage && <p>No more Pokémon to load</p>}
-      <div className="h-10"></div>
+      <div className="h-20"></div>
     </div>
   );
 }

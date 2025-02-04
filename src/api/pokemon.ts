@@ -2,7 +2,7 @@ import { PokemonPage } from "@/types/types";
 import axios from "axios";
 
 export async function getPokemons(url?: string): Promise<PokemonPage> {
-  const pageUrl = url || `https://pokeapi.co/api/v2/pokemon?offset=0&limit=54`;
+  const pageUrl = url || `https://pokeapi.co/api/v2/pokemon?offset=0&limit=42`;
   const res = await axios.get(pageUrl);
   return res.data;
 }
