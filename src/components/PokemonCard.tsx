@@ -33,6 +33,7 @@ const PokemonCard = ({ currentPokemonUrl, flipToggleDetails }: Props) => {
   if (pokemonDetails.isLoading)
     return (
       <div className="fixed right-0 top-0 h-full w-[400px] border-l-2 border-black bg-white">
+        {/* SKELETON */}
         <div className="flex h-full w-full flex-col items-center justify-start gap-14 py-24">
           <Skeleton className="h-52 w-52 rounded-full" />
           <div className="flex flex-col gap-4">
@@ -52,6 +53,7 @@ const PokemonCard = ({ currentPokemonUrl, flipToggleDetails }: Props) => {
 
   return (
     <div className="fixed right-0 top-0 h-full w-[400px] border-l-2 border-black bg-white">
+      {/* GRADIENT BG */}
       <div
         className="absolute inset-0 -top-56 h-full w-full"
         style={{
@@ -60,7 +62,6 @@ const PokemonCard = ({ currentPokemonUrl, flipToggleDetails }: Props) => {
         }}
       ></div>
 
-      {/* Back button */}
       <div className="relative h-[300px] rounded-b-[100px] px-8">
         {/* LOGO */}
         <div className="relative z-10 flex items-center">
@@ -78,6 +79,7 @@ const PokemonCard = ({ currentPokemonUrl, flipToggleDetails }: Props) => {
           />
         </div>
 
+        {/* BUTTON */}
         <div
           className="relative cursor-pointer items-center text-white"
           onClick={flipToggleDetails}
@@ -88,11 +90,12 @@ const PokemonCard = ({ currentPokemonUrl, flipToggleDetails }: Props) => {
           </button>
         </div>
 
-        {/* Name */}
+        {/* POKEMON NAME */}
         <p className="z-30 pt-14 text-4xl font-bold capitalize text-white">
           {pokemonDetails.data?.name}
         </p>
 
+        {/* POKEMON IMAGE */}
         <img
           className="absolute -bottom-20 left-24 z-20"
           src={
@@ -104,7 +107,7 @@ const PokemonCard = ({ currentPokemonUrl, flipToggleDetails }: Props) => {
       </div>
 
       <div className="px-4 py-14">
-        {/* TYPE */}
+        {/* POKEMON TYPE */}
         <div className="flex justify-center py-10">
           <div
             className="flex w-[150px] justify-center rounded-3xl py-1 capitalize"
@@ -114,6 +117,7 @@ const PokemonCard = ({ currentPokemonUrl, flipToggleDetails }: Props) => {
           </div>
         </div>
 
+        {/* POKEMON STATS */}
         <div className="grid grid-flow-col grid-cols-2 grid-rows-3 gap-6">
           {pokemonDetails.data?.stats.map((stat: PokemonStats, index) => (
             <div className="flex justify-between px-2" key={index}>
@@ -129,7 +133,7 @@ const PokemonCard = ({ currentPokemonUrl, flipToggleDetails }: Props) => {
         </div>
       </div>
 
-      {/* Sprites */}
+      {/* POKEMON SPRITES */}
       <div className="flex flex-col items-center justify-center">
         <p className="text-2xl font-bold" style={{ color: pokemonCardStatic }}>
           Sprites

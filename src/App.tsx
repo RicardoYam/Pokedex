@@ -69,6 +69,7 @@ function App() {
   if (pokemonQuery.isLoading)
     return (
       <div>
+        {/* SKELETON */}
         <div className="relative -z-10 flex items-center">
           <img
             className="absolute -top-40 right-0"
@@ -84,12 +85,10 @@ function App() {
           />
         </div>
 
-        {/* Title */}
         <div className="p-10">
           <h1 className="text-5xl font-bold">Pokedex</h1>
         </div>
 
-        {/* Skeleton */}
         <div className="m-4 grid grid-cols-6 gap-4 px-5">
           {Array.from({ length: 12 }).map((_, index) => (
             <div key={index}>
@@ -105,6 +104,7 @@ function App() {
 
   return (
     <div>
+      {/* LOGO */}
       <div className="relative -z-10 flex items-center">
         <img
           className="absolute -top-40 right-0"
@@ -119,6 +119,8 @@ function App() {
           width={250}
         />
       </div>
+
+      {/* HEADER */}
       <div className="flex justify-between p-10">
         <h1 className="text-5xl font-bold">Pokedex</h1>
       </div>
@@ -138,6 +140,7 @@ function App() {
         ))}
       </div>
 
+      {/* POKEMON LIST */}
       {toggleDetails && selectedPokemon && (
         <motion.div
           className="fixed right-0 top-0 h-full w-[400px] border-l-2 border-black bg-white"
@@ -154,7 +157,7 @@ function App() {
         </motion.div>
       )}
 
-      {/* Infinite Scroll Trigger */}
+      {/* INFINITE SCROLL TRIGGER */}
       {pokemonQuery.isFetchingNextPage && (
         <div className="flex items-center justify-center">
           <BeatLoader color="#6DB948" size={50} />
