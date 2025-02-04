@@ -1,11 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
 import { getPokemons } from "./api/pokemon";
 import { Pokemon } from "./types/types";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import PokemonCard from "./components/PokemonCard";
 import Ellipse from "./assets/Ellipse.png";
 import Subtract from "./assets/Subtract.png";
 import { Skeleton } from "./components/ui/skeleton";
+import { motion } from "motion/react";
 
 function App() {
   const pokemonQuery = useQuery<Pokemon[]>({
@@ -15,6 +16,26 @@ function App() {
 
   const [toggleDetails, setToggleDetails] = useState<boolean>(false);
   const [selectedPokemon, setSelectedPokemon] = useState<string | null>(null);
+  const mouseOutsideRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (
+        mouseOutsideRef.current &&
+        !mouseOutsideRef.current.contains(event.target as Node)
+      ) {
+        flipToggleDetails();
+      }
+    }
+
+    if (toggleDetails) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [toggleDetails]);
 
   function flipToggleDetails() {
     setToggleDetails(false);
@@ -52,7 +73,7 @@ function App() {
               key={index}
               className="flex animate-pulse items-center justify-between rounded-xl bg-gray-200 px-6 py-4"
             >
-              <Skeleton />
+              <Skeleton className="h-full w-full" />
             </div>
           ))}
         </div>
@@ -85,7 +106,7 @@ function App() {
         {pokemonQuery.data?.slice(0, 10).map((pokemon, index) => (
           <div
             key={index}
-            className="bg-menu flex cursor-pointer items-center justify-between rounded-xl px-6 py-4"
+            className="bg-menu flex cursor-pointer items-center justify-between rounded-xl px-6 py-4 hover:bg-[#61a63f]"
             onClick={() => {
               setSelectedPokemon(pokemon.url);
               setToggleDetails(true);
@@ -98,10 +119,19 @@ function App() {
       </div>
 
       {toggleDetails && selectedPokemon && (
-        <PokemonCard
-          currentPokemonUrl={selectedPokemon}
-          flipToggleDetails={flipToggleDetails}
-        />
+        <motion.div
+          className="absolute right-0 top-0 h-full w-[400px] border-l-2 border-black bg-white"
+          ref={mouseOutsideRef}
+          initial={{ opacity: 0, x: 100 }}
+          animate={{ opacity: 1, x: 0 }}
+          exit={{ opacity: 0, x: 100 }}
+          transition={{ duration: 0.7 }}
+        >
+          <PokemonCard
+            currentPokemonUrl={selectedPokemon}
+            flipToggleDetails={flipToggleDetails}
+          />
+        </motion.div>
       )}
     </div>
   );

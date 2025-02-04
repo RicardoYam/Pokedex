@@ -44,13 +44,16 @@ const PokemonCard = ({ currentPokemonUrl, flipToggleDetails }: Props) => {
 
   return (
     <div className="absolute right-0 top-0 h-full w-[400px] border-l-2 border-black bg-white">
-      {/* Back button */}
       <div
-        className="relative h-[300px] rounded-b-[100px] px-8 py-2"
+        className="absolute inset-0 -top-56 h-full w-full"
         style={{
-          background: `${pokemonCardGradient}`,
+          background: pokemonCardGradient,
+          clipPath: "ellipse(100% 60% at 50% 0%)",
         }}
-      >
+      ></div>
+
+      {/* Back button */}
+      <div className="relative h-[300px] rounded-b-[100px] px-8">
         {/* LOGO */}
         <div className="relative z-10 flex items-center">
           <img
@@ -78,7 +81,7 @@ const PokemonCard = ({ currentPokemonUrl, flipToggleDetails }: Props) => {
         </div>
 
         {/* Name */}
-        <p className="pt-14 text-4xl font-bold capitalize text-white">
+        <p className="z-30 pt-14 text-4xl font-bold capitalize text-white">
           {pokemonDetails.data?.name}
         </p>
 
