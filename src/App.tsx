@@ -16,8 +16,9 @@ function App() {
 
   const [toggleDetails, setToggleDetails] = useState<boolean>(false);
   const [selectedPokemon, setSelectedPokemon] = useState<string | null>(null);
-  const mouseOutsideRef = useRef<HTMLDivElement>(null);
   const [randomIndex, setRandomIndex] = useState<number>(0);
+
+  const mouseOutsideRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -116,7 +117,10 @@ function App() {
           Shuffle
         </button>
       </div>
-      <div key={randomIndex} className="m-4 grid grid-cols-6 gap-4 px-5">
+      <div
+        key={randomIndex}
+        className="m-4 grid grid-cols-3 gap-4 px-5 text-xs md:grid-cols-6 md:text-base"
+      >
         {pokemonQuery.data
           ?.slice(randomIndex, randomIndex + 10)
           .map((pokemon, index) => (
