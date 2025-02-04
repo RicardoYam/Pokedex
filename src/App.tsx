@@ -24,7 +24,7 @@ function App() {
   if (pokemonQuery.isLoading)
     return (
       <div>
-        {/* Background Elements */}
+        {/* Background */}
         <div className="relative -z-10 flex items-center">
           <img
             className="absolute -top-40 right-0"

@@ -118,6 +118,7 @@ const PokemonCard = ({ currentPokemonUrl, flipToggleDetails }: Props) => {
         </div>
       </div>
 
+      {/* Sprites */}
       <div className="flex flex-col items-center justify-center">
         <p className="text-2xl font-bold" style={{ color: pokemonCardStatic }}>
           Sprites
