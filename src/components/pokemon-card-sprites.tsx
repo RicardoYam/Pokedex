@@ -1,6 +1,3 @@
-import { Details } from "@/types/types";
-import { UseQueryResult } from "@tanstack/react-query";
-
 interface Props {
   pokemonFrontImage: string | undefined;
   pokemonBackImage: string | undefined;
