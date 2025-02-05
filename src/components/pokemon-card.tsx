@@ -2,7 +2,6 @@ import { useQuery } from "@tanstack/react-query";
 import { PokemonService } from "@/server/pokemon";
 import { Details } from "../types/types";
 import { getPokemonCardGradientBg, getPokemonCardStaticBg } from "@/utils/util";
-import { POKEMON_DETAILS_QUERY } from "@/constants/query-key";
 import PokemonCardSkeleton from "./pokemon-card-skeleton";
 import PokemonCardHeader from "./pokemon-card-header";
 import PokemonCardStats from "./pokemon-card-stats";
@@ -15,7 +14,7 @@ interface Props {
 
 const PokemonCard = ({ currentPokemonUrl, flipToggleDetails }: Props) => {
   const pokemonDetails = useQuery<Details>({
-    queryKey: [`${POKEMON_DETAILS_QUERY}`, currentPokemonUrl],
+    queryKey: ["pokemonDetailsQuery", currentPokemonUrl],
     queryFn: () => PokemonService.getPokemonDetails(currentPokemonUrl),
   });
 

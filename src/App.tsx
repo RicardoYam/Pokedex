@@ -10,7 +10,6 @@ import {
   POKEMON_API_LIMITE_SIZE,
   POKEMON_API_OFFSET_SIZE,
 } from "./constants/primitive";
-import { POKEMON_INFINITESCROLL_QUERY } from "./constants/query-key";
 import PokemonListSkeleton from "./components/pokemon-list-skeleton";
 import PokemonBgCircle from "./assets/pokemon-bg-circle.png";
 import PokemonBgRing from "./assets/pokemon-bg-ring.png";
@@ -22,7 +21,7 @@ function App() {
   const mouseOutsideRef = useRef<HTMLDivElement>(null);
 
   const pokemonQuery = useInfiniteQuery<PokemonPage>({
-    queryKey: [`${POKEMON_INFINITESCROLL_QUERY}`],
+    queryKey: ["pokemonInfiniteScrollQuery"],
     queryFn: ({
       pageParam = `${POKEMON_BASE_URL}?offset=${POKEMON_API_OFFSET_SIZE}&limit=${POKEMON_API_LIMITE_SIZE}`,
     }) => PokemonService.getPokemons(pageParam as string),
@@ -111,11 +110,7 @@ function App() {
             }}
           >
             <p className="font-semibold text-white">#00{index + 1}</p>
-            <p className="font-semibold text-white">
-              {pokemon.name.length > 15
-                ? `${pokemon.name.substring(0, 15)}...`
-                : pokemon.name}
-            </p>
+            <p className="truncate font-semibold text-white">{pokemon.name}</p>
           </div>
         ))}
       </div>
