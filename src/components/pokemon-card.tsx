@@ -47,17 +47,22 @@ const PokemonCard = ({ currentPokemonUrl, flipToggleDetails }: Props) => {
 
       <PokemonCardHeader
         flipToggleDetails={flipToggleDetails}
-        pokemonDetails={pokemonDetails}
+        pokemonName={pokemonDetails.data?.name ?? "Unknown"}
+        pokemonImage={
+          pokemonDetails.data?.sprites.other["official-artwork"]
+            .front_default ?? ""
+        }
       />
 
       <PokemonCardStats
-        pokemonDetails={pokemonDetails}
+        pokemonStats={pokemonDetails.data?.stats ?? []}
         pokemonType={pokemonType}
         pokemonCardStatic={pokemonCardStatic}
       />
 
       <PokemonCardSprites
-        pokemonDetails={pokemonDetails}
+        pokemonFrontImage={pokemonDetails.data?.sprites.front_default}
+        pokemonBackImage={pokemonDetails.data?.sprites.back_default}
         pokemonCardStatic={pokemonCardStatic}
       />
     </div>

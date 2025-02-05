@@ -1,15 +1,14 @@
-import { Details, PokemonStats } from "@/types/types";
+import { PokemonStats } from "@/types/types";
 import { convertStat } from "@/utils/util";
-import { UseQueryResult } from "@tanstack/react-query";
 
 interface Props {
-  pokemonDetails: UseQueryResult<Details, Error>;
+  pokemonStats: PokemonStats[];
   pokemonType: string;
   pokemonCardStatic: string;
 }
 
 const PokemonCardStats = ({
-  pokemonDetails,
+  pokemonStats,
   pokemonType,
   pokemonCardStatic,
 }: Props) => {
@@ -27,7 +26,7 @@ const PokemonCardStats = ({
 
       {/* POKEMON STATS */}
       <div className="grid grid-flow-col grid-cols-2 grid-rows-3 gap-6">
-        {pokemonDetails.data?.stats.map((stat: PokemonStats, index) => (
+        {pokemonStats.map((stat: PokemonStats, index) => (
           <div className="flex justify-between px-2" key={index}>
             <p className="font-extrabold" style={{ color: pokemonCardStatic }}>
               {convertStat(stat.stat.name)}

@@ -1,15 +1,18 @@
-import { Details } from "@/types/types";
-import { UseQueryResult } from "@tanstack/react-query";
 import { ChevronLeft } from "lucide-react";
 import PokemonBgCircle from "@/assets/pokemon-bg-circle.png";
 import PokemonBgRing from "@/assets/pokemon-bg-ring.png";
 
 interface Props {
   flipToggleDetails: () => void;
-  pokemonDetails: UseQueryResult<Details, Error>;
+  pokemonName: string;
+  pokemonImage: string;
 }
 
-const PokemonCardHeader = ({ flipToggleDetails, pokemonDetails }: Props) => {
+const PokemonCardHeader = ({
+  flipToggleDetails,
+  pokemonName,
+  pokemonImage,
+}: Props) => {
   return (
     <div className="relative h-[300px] rounded-b-[100px] px-8">
       {/* LOGO */}
@@ -41,15 +44,13 @@ const PokemonCardHeader = ({ flipToggleDetails, pokemonDetails }: Props) => {
 
       {/* POKEMON NAME */}
       <p className="z-30 pt-14 text-4xl font-bold capitalize text-white">
-        {pokemonDetails.data?.name}
+        {pokemonName}
       </p>
 
       {/* POKEMON IMAGE */}
       <img
         className="absolute -bottom-20 left-24 z-20"
-        src={
-          pokemonDetails.data?.sprites.other["official-artwork"].front_default
-        }
+        src={pokemonImage}
         alt={"pokemonImage"}
         width={220}
       />

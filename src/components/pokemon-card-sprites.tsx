@@ -2,11 +2,16 @@ import { Details } from "@/types/types";
 import { UseQueryResult } from "@tanstack/react-query";
 
 interface Props {
-  pokemonDetails: UseQueryResult<Details, Error>;
+  pokemonFrontImage: string | undefined;
+  pokemonBackImage: string | undefined;
   pokemonCardStatic: string;
 }
 
-const PokemonCardSprites = ({ pokemonDetails, pokemonCardStatic }: Props) => {
+const PokemonCardSprites = ({
+  pokemonFrontImage,
+  pokemonBackImage,
+  pokemonCardStatic,
+}: Props) => {
   return (
     <div className="flex flex-col items-center justify-center">
       <p className="text-2xl font-bold" style={{ color: pokemonCardStatic }}>
@@ -14,16 +19,8 @@ const PokemonCardSprites = ({ pokemonDetails, pokemonCardStatic }: Props) => {
       </p>
 
       <div className="grid grid-cols-3">
-        <img
-          src={pokemonDetails.data?.sprites.front_default}
-          alt={"pokemonImage front"}
-          width={150}
-        />
-        <img
-          src={pokemonDetails.data?.sprites.back_default}
-          alt={"pokemonImage front"}
-          width={150}
-        />
+        <img src={pokemonFrontImage} alt={"pokemonImage front"} width={150} />
+        <img src={pokemonBackImage} alt={"pokemonImage front"} width={150} />
       </div>
     </div>
   );
