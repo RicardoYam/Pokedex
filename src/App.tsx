@@ -1,31 +1,38 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { getPokemons } from "./api/pokemon";
-import { Pokemon, PokemonPage } from "./types/types";
-import { useEffect, useRef, useState } from "react";
-import PokemonCard from "./components/PokemonCard";
-import Ellipse from "./assets/Ellipse.png";
-import Subtract from "./assets/Subtract.png";
-import { Skeleton } from "./components/ui/skeleton";
+import { PokemonPage } from "./types/types";
+import { useEffect, useMemo, useRef, useState } from "react";
+import PokemonCard from "./components/pokemon-card";
 import { motion } from "motion/react";
 import BeatLoader from "react-spinners/ClipLoader";
+import { PokemonService } from "./server/pokemon";
+import { POKEMON_BASE_URL } from "./constants/urls";
+import {
+  POKEMON_API_LIMITE_SIZE,
+  POKEMON_API_OFFSET_SIZE,
+} from "./constants/primitive";
+import { POKEMON_INFINITESCROLL_QUERY } from "./constants/query-key";
+import PokemonListSkeleton from "./components/pokemon-list-skeleton";
+import PokemonBgCircle from "./assets/pokemon-bg-circle.png";
+import PokemonBgRing from "./assets/pokemon-bg-ring.png";
 
 function App() {
-  const pokemonQuery = useInfiniteQuery<PokemonPage>({
-    queryKey: ["pokemons"],
-    queryFn: ({
-      pageParam = "https://pokeapi.co/api/v2/pokemon?offset=0&limit=42",
-    }) => getPokemons(pageParam as string),
-    initialPageParam: "https://pokeapi.co/api/v2/pokemon?offset=0&limit=42",
-    getNextPageParam: (lastPage) => lastPage.next,
-  });
-
-  const allPokemons: Pokemon[] =
-    pokemonQuery.data?.pages.flatMap((page) => page.results) || [];
-
   const [toggleDetails, setToggleDetails] = useState<boolean>(false);
   const [selectedPokemon, setSelectedPokemon] = useState<string | null>(null);
 
   const mouseOutsideRef = useRef<HTMLDivElement>(null);
+
+  const pokemonQuery = useInfiniteQuery<PokemonPage>({
+    queryKey: [`${POKEMON_INFINITESCROLL_QUERY}`],
+    queryFn: ({
+      pageParam = `${POKEMON_BASE_URL}?offset=${POKEMON_API_OFFSET_SIZE}&limit=${POKEMON_API_LIMITE_SIZE}`,
+    }) => PokemonService.getPokemons(pageParam as string),
+    initialPageParam: `${POKEMON_BASE_URL}?offset=${POKEMON_API_OFFSET_SIZE}&limit=${POKEMON_API_LIMITE_SIZE}`,
+    getNextPageParam: (lastPage) => lastPage.next,
+  });
+
+  const allPokemons = useMemo(() => {
+    return pokemonQuery.data?.pages.flatMap((page) => page.results) || [];
+  }, [pokemonQuery.data]);
 
   useEffect(() => {
     function handleScroll() {
@@ -66,41 +73,9 @@ function App() {
     setSelectedPokemon(null);
   }
 
-  if (pokemonQuery.isLoading)
-    return (
-      <div>
-        {/* SKELETON */}
-        <div className="relative -z-10 flex items-center">
-          <img
-            className="absolute -top-40 right-0"
-            src={Subtract}
-            alt="subtract"
-            width={600}
-          />
-          <img
-            className="absolute right-28 top-20"
-            src={Ellipse}
-            alt="ellipse"
-            width={250}
-          />
-        </div>
+  if (pokemonQuery.isLoading) return <PokemonListSkeleton />;
 
-        <div className="p-10">
-          <h1 className="text-5xl font-bold">Pokedex</h1>
-        </div>
-
-        <div className="m-4 grid grid-cols-6 gap-4 px-5">
-          {Array.from({ length: 12 }).map((_, index) => (
-            <div key={index}>
-              <Skeleton className="z-20 h-12 w-full" />
-            </div>
-          ))}
-        </div>
-      </div>
-    );
-
-  if (pokemonQuery.isError)
-    return <div>{JSON.stringify(pokemonQuery.error)}</div>;
+  if (pokemonQuery.isError) return <div>something went wrong!</div>;
 
   return (
     <div>
@@ -108,13 +83,13 @@ function App() {
       <div className="relative -z-10 flex items-center">
         <img
           className="absolute -top-40 right-0"
-          src={Subtract}
+          src={PokemonBgRing}
           alt="subtract"
           width={600}
         />
         <img
           className="absolute right-28 top-20"
-          src={Ellipse}
+          src={PokemonBgCircle}
           alt="ellipse"
           width={250}
         />
@@ -124,18 +99,23 @@ function App() {
       <div className="flex justify-between p-10">
         <h1 className="text-5xl font-bold">Pokedex</h1>
       </div>
-      <div className="m-4 grid grid-cols-3 gap-4 px-5 text-xs md:grid-cols-6 md:text-base">
+
+      <div className="m-4 grid grid-cols-3 gap-4 px-5 text-xs md:grid-cols-4 md:text-sm lg:grid-cols-6">
         {allPokemons.map((pokemon, index) => (
           <div
             key={index}
-            className="flex cursor-pointer items-center justify-between rounded-xl bg-menu px-6 py-8 hover:bg-[#61a63f]"
+            className="flex cursor-pointer flex-col items-center justify-center gap-4 rounded-xl bg-menu px-6 py-8 text-center hover:bg-[#61a63f] lg:flex-row lg:justify-between"
             onClick={() => {
               setSelectedPokemon(pokemon.url);
               setToggleDetails(true);
             }}
           >
             <p className="font-semibold text-white">#00{index + 1}</p>
-            <p className="font-semibold text-white">{pokemon.name}</p>
+            <p className="font-semibold text-white">
+              {pokemon.name.length > 15
+                ? `${pokemon.name.substring(0, 15)}...`
+                : pokemon.name}
+            </p>
           </div>
         ))}
       </div>
@@ -163,6 +143,7 @@ function App() {
           <BeatLoader color="#6DB948" size={50} />
         </div>
       )}
+
       {!pokemonQuery.hasNextPage && (
         <div className="flex items-center justify-center">
           No more pokemons to load!
